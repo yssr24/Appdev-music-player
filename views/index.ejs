@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NodeJS Music Player</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="https://kit.fontawesome.com/52fce90bb3.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="music-player">
+            <nav>
+                <a class="circle" href="/music_add" title="Add Song">
+                    <i class="fa-solid fa-plus"></i>
+                </a>
+                <a class="circle" title="Lists" id="toggleList">
+                    <i class="fa-solid fa-bars"></i>
+                </a>
+            </nav>
+            <img src="/logo.png" class="song-img">
+            <h1 id="currentSongTitle">Song Title</h1>
+            <p id="currentArtist">Artist</p>
+
+            <audio id="song">
+                <source src="" type="audio/mpeg">
+            </audio>
+            
+            <input type="range" value="0" id="progress">
+
+            <div class="controls">
+                <div><i class="fa-solid fa-backward"></i></div>
+                <div onclick="playPause()"><i class="fa-solid fa-play" id="ctrlIcon"></i></div>
+                <div><i class="fa-solid fa-forward"></i></div>
+            </div>
+        </div>
+
+        <div id="songList" style="display: none;">
+            <h2>Song List</h2>
+            <ul>
+                <% songs.forEach(song => { %>
+                    <li onclick="selectSong('<%= song.title %>', '<%= song.artist %>', '<%= song.file_path %>')">
+                        <strong><%= song.title %></strong> by <%= song.artist %>
+                        <i class="fa-solid fa-trash float-start" style="color: #127735; cursor: pointer;" onclick="deleteSong(<%= song.id %>)"></i>
+                    </li>
+                <% }) %>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        let progress = document.getElementById("progress");
+        let song = document.getElementById("song");
+        let ctrlIcon = document.getElementById("ctrlIcon");
+
+        song.onloadedmetadata = function(){
+            progress.max = song.duration;
+            progress.value = song.currentTime;
+        }
+
+        function playPause() {
+            const songImg = document.querySelector('.song-img');
+            if (ctrlIcon.classList.contains("fa-pause")) {
+                song.pause();
+                ctrlIcon.classList.remove("fa-pause");
+                ctrlIcon.classList.add("fa-play");
+                songImg.classList.remove("spinning");
+            } else {
+                song.play();
+                ctrlIcon.classList.add("fa-pause");
+                ctrlIcon.classList.remove("fa-play");
+                songImg.classList.add("spinning");
+            }
+        }
+
+        song.ontimeupdate = function(){
+            progress.value = song.currentTime;
+        }
+
+        progress.oninput = function(){
+            song.currentTime = progress.value;
+        }
+
+        document.getElementById("toggleList").onclick = function() {
+            const songList = document.getElementById("songList");
+            if (songList.style.display === "none") {
+                songList.style.display = "block";
+            } else {
+                songList.style.display = "none";
+            }
+        }
+
+        function selectSong(title, artist, filePath) {
+            document.getElementById('currentSongTitle').innerText = title;
+            document.getElementById('currentArtist').innerText = artist;
+            song.src = filePath;
+            song.play();
+            ctrlIcon.classList.add("fa-pause");
+            ctrlIcon.classList.remove("fa-play");
+            document.querySelector('.song-img').classList.add("spinning");
+        }
+        function deleteSong(songId) {
+        if (confirm("Are you sure you want to delete this song?")) {
+            fetch(`/song/${songId}/delete`, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Song deleted successfully');
+                    window.location.reload();
+                } else {
+                    alert('Failed to delete the song');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    }
+    </script>
+</body>
+</html>

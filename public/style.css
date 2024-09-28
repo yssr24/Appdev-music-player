@@ -1,0 +1,144 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+}
+
+body {
+    background: #121212;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.music-player, .music-player-add {
+    background: #282828;
+    width: 400px;
+    padding: 25px 35px;
+    text-align: center;
+    border-radius: 30px;
+    color: #FFFFFF;
+    margin-right: 20px; 
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+nav .circle {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    background: #1DB954;
+    color: #fff;
+    box-shadow: 0 5px 10px rgba(255, 255, 255, 0.1);
+}
+
+.song-img {
+    width: 220px;
+    border-radius: 50%;
+    border: 8px solid #fff;
+    box-shadow: 0 10px 60px rgba(255, 255, 255, 0.1);
+}
+
+.music-player h1 {
+    font-size: 20px;
+    font-weight: 400;
+    color: #fff;
+    margin-top: 20px;
+}
+
+.music-player p {
+    font-size: 14px;
+    color: #fff;
+}
+
+#progress {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 6px;
+    background: #1DB954;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 40px 0;
+}
+
+#progress::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    background: #1DB954;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 8px solid #fff;
+    box-shadow: 0 5px 5px rgba(255, 255, 255, 0.1);
+}
+
+.controls div {
+    width: 60px;
+    height: 60px;
+    margin: 20px;
+    background: #1DB954;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: #fff;
+    box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+}
+
+.controls div:nth-child(2) {
+    transform: scale(1.5);
+    background: #fff;
+    color: #1DB954;
+}
+
+.form-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+}
+
+#songList {
+    border: 1px solid #1DB954;
+    border-radius: 15px;
+    padding: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+    background: #282828;
+    color: #fff;
+    width: 300px;
+}
+#songList h2 {
+    margin-bottom: 10px;
+}
+#songList li {
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+#songList li:hover {
+    background: #1DB954;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.song-img.spinning {
+    animation: spin 5s linear infinite;
+}
